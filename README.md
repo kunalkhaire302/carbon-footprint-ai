@@ -140,3 +140,4 @@ The frontend and backend must be independently deployed for optimal micro-servic
 2. **Frontend UI (e.g., Vercel, Netlify, Render Static Site)**:
    - Deploy the `frontend/` directory as a static site payload.
    - **Crucial Update**: Navigate into `app.js` and alter the `fetch()` route to target the live backend `https://<your-backend-url>/predict` rather than `http://localhost:5000`.
+# carbon-footprint-ai
