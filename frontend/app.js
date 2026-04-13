@@ -1,0 +1,227 @@
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // -- Theme Handling --
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const htmlEl = document.documentElement;
+    // defaults to dark in HTML, let's allow toggling
+    themeBtn.addEventListener('click', () => {
+        if(htmlEl.getAttribute('data-theme') === 'dark') {
+            htmlEl.removeAttribute('data-theme');
+        } else {
+            htmlEl.setAttribute('data-theme', 'dark');
+        }
+    });
+
+    // -- Form Handling --
+    const form = document.getElementById('carbonForm');
+    const btnText = document.getElementById('btnText');
+    const spinner = document.getElementById('loadingSpinner');
+    const predictBtn = document.getElementById('predictBtn');
+    const resultsSection = document.getElementById('resultsSection');
+
+    // Chart instances to destroy and recreate
+    let categoryChartInst = null;
+    let comparisonChartInst = null;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Collect data
+        const payload = {
+            household_size: parseInt(document.getElementById('household_size').value),
+            electricity_usage_kwh: parseFloat(document.getElementById('electricity_usage_kwh').value),
+            heating_source: document.getElementById('heating_source').value,
+            vehicle_type: document.getElementById('vehicle_type').value,
+            vehicle_km: parseFloat(document.getElementById('vehicle_km').value),
+            flights_short_haul: parseInt(document.getElementById('flights_short_haul').value),
+            flights_long_haul: parseInt(document.getElementById('flights_long_haul').value),
+            diet_type: document.getElementById('diet_type').value,
+            grocery_spend_monthly: parseFloat(document.getElementById('grocery_spend_monthly').value),
+            waste_kg_weekly: parseFloat(document.getElementById('waste_kg_weekly').value),
+            internet_usage_hours: parseFloat(document.getElementById('internet_usage_hours').value)
+        };
+
+        // UI State: Loading
+        predictBtn.disabled = true;
+        btnText.classList.add('hidden');
+        spinner.classList.remove('hidden');
+
+        try {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if(!response.ok) throw new Error("API Error");
+
+            const data = await response.json();
+            
+            // Render Results
+            renderResults(data);
+            
+            // Render History
+            fetchAndRenderHistory();
+            
+            // Ensure section is visible smoothly
+            resultsSection.classList.remove('results-hidden');
+            resultsSection.classList.add('results-visible');
+            
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+
+        } catch (err) {
+            alert('Failed to connect to the prediction API. Ensure backend is running.');
+            console.error(err);
+        } finally {
+            // Revert Button
+            predictBtn.disabled = false;
+            btnText.classList.remove('hidden');
+            spinner.classList.add('hidden');
+        }
+    });
+
+    function renderResults(data) {
+        // Main score
+        const scoreEl = document.getElementById('totalScore');
+        const footprint = data.total_footprint_tco2e;
+        scoreEl.innerText = footprint.toFixed(2);
+        
+        // Color coding
+        scoreEl.className = 'main-number'; // Reset
+        if(data.comparison.grade === 'A' || data.comparison.grade === 'B') scoreEl.classList.add('color-green');
+        else if (data.comparison.grade === 'C') scoreEl.classList.add('color-amber');
+        else scoreEl.classList.add('color-red');
+
+        // Badges
+        const gradeBdg = document.getElementById('gradeBadge');
+        gradeBdg.innerText = data.comparison.grade;
+        gradeBdg.className = 'badge ' + data.comparison.grade;
+        document.getElementById('percentileLabel').innerText = data.comparison.percentile;
+
+        // Render Charts
+        renderCharts(data.category_breakdown, data.comparison);
+
+        // Render Suggestions
+        const listDiv = document.getElementById('suggestionsList');
+        listDiv.innerHTML = ''; // clear
+
+        data.suggestions.forEach(sug => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+            item.innerHTML = `
+                <div class="suggestion-rank">#${sug.rank}</div>
+                <div class="suggestion-content">
+                    <p>${sug.action}</p>
+                    <div class="suggestion-meta">
+                        <span>Category: ${sug.category}</span>
+                        <span>Complexity: <strong>${sug.difficulty}</strong></span>
+                    </div>
+                </div>
+                <div class="suggestion-badge">- ${sug.co2_saved_tyr} tCO₂e</div>
+            `;
+            listDiv.appendChild(item);
+        });
+    }
+
+    function renderCharts(breakdown, comp) {
+        // Destroy old ones if exist
+        if(categoryChartInst) categoryChartInst.destroy();
+        if(comparisonChartInst) comparisonChartInst.destroy();
+
+        // Doughnut Chart Setup
+        const catCtx = document.getElementById('categoryChart').getContext('2d');
+        categoryChartInst = new Chart(catCtx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(breakdown),
+                datasets: [{
+                    data: Object.values(breakdown),
+                    backgroundColor: [
+                        '#1a472a', '#2a9d8f', '#e9c46a', '#f4a261', '#e76f51', '#8ab17d'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: getComputedStyle(document.body).color } }
+                }
+            }
+        });
+
+        // Bar Chart Setup
+        const compCtx = document.getElementById('comparisonChart').getContext('2d');
+        comparisonChartInst = new Chart(compCtx, {
+            type: 'bar',
+            data: {
+                labels: ['You', 'India Avg', 'World Avg'],
+                datasets: [{
+                    label: 'Emissions tCO₂e',
+                    data: [comp.your_value, comp.india_avg, comp.world_avg],
+                    backgroundColor: [
+                        comp.your_value > comp.world_avg ? '#e76f51' : '#52b788',
+                        '#2A9D8F',
+                        '#E9C46A'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#94a3b8' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' }
+                    }
+                }
+            }
+        });
+    }
+
+    async function fetchAndRenderHistory() {
+        try {
+            // First look in localStorage to cache offline history (Bonus)
+            let localHistStr = localStorage.getItem('carbonHistory');
+            let localHist = localHistStr ? JSON.parse(localHistStr) : [];
+            
+            // Fetch from server
+            const res = await fetch('/history');
+            if(res.ok) {
+                const apiHist = await res.json();
+                localStorage.setItem('carbonHistory', JSON.stringify(apiHist));
+                localHist = apiHist;
+            }
+
+            const tbody = document.getElementById('historyBody');
+            tbody.innerHTML = '';
+            
+            localHist.forEach(record => {
+                // Determine top category
+                const bd = record.prediction.category_breakdown;
+                const topCat = Object.keys(bd).reduce((a, b) => bd[a] > bd[b] ? a : b);
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${new Date().toLocaleDateString()}</td>
+                    <td><strong>${record.prediction.total_footprint_tco2e.toFixed(2)}</strong></td>
+                    <td><span class="badge ${record.prediction.comparison.grade}">${record.prediction.comparison.grade}</span></td>
+                    <td>${topCat}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+        } catch(err) {
+            console.log('Using local storage history due to fetch failure');
+        }
+    }
+
+    // Initial fetch so page reload shows history immediately
+    fetchAndRenderHistory();
+});

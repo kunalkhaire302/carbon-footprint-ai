@@ -1,0 +1,632 @@
+[
+    {
+        "input": {
+            "household_size": 2,
+            "electricity_usage_kwh": 250,
+            "heating_source": "none",
+            "vehicle_type": "petrol",
+            "vehicle_km": 800,
+            "flights_short_haul": 1,
+            "flights_long_haul": 0,
+            "diet_type": "non-vegetarian",
+            "grocery_spend_monthly": 300,
+            "waste_kg_weekly": 15,
+            "internet_usage_hours": 6
+        },
+        "prediction": {
+            "total_footprint_tco2e": 7.13,
+            "category_breakdown": {
+                "Transport": 2.07,
+                "Electricity": 0.6,
+                "Diet": 2.3,
+                "Goods": 1.8,
+                "Waste": 0.04,
+                "Digital": 0.18
+            },
+            "comparison": {
+                "india_avg": 1.9,
+                "world_avg": 4.7,
+                "your_value": 7.13,
+                "percentile": 1,
+                "grade": "F"
+            },
+            "suggestions": [
+                {
+                    "action": "Transition to a vegetarian/vegan diet",
+                    "co2_saved_tyr": 0.92,
+                    "category": "Diet",
+                    "difficulty": "Medium",
+                    "rank": 1
+                },
+                {
+                    "action": "Switch to public transport or EV",
+                    "co2_saved_tyr": 0.83,
+                    "category": "Transport",
+                    "difficulty": "Hard",
+                    "rank": 2
+                },
+                {
+                    "action": "Reduce long-haul flights by 1 per year",
+                    "co2_saved_tyr": 0.62,
+                    "category": "Transport",
+                    "difficulty": "Medium",
+                    "rank": 3
+                },
+                {
+                    "action": "Buy second-hand clothes & electronics",
+                    "co2_saved_tyr": 0.36,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 4
+                },
+                {
+                    "action": "Have 3 meat-free days per week",
+                    "co2_saved_tyr": 0.34,
+                    "category": "Diet",
+                    "difficulty": "Easy",
+                    "rank": 5
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "household_size": 2,
+            "electricity_usage_kwh": 250,
+            "heating_source": "none",
+            "vehicle_type": "petrol",
+            "vehicle_km": 800,
+            "flights_short_haul": 1,
+            "flights_long_haul": 0,
+            "diet_type": "non-vegetarian",
+            "grocery_spend_monthly": 300,
+            "waste_kg_weekly": 15,
+            "internet_usage_hours": 6
+        },
+        "prediction": {
+            "total_footprint_tco2e": 7.13,
+            "category_breakdown": {
+                "Transport": 2.07,
+                "Electricity": 0.6,
+                "Diet": 2.3,
+                "Goods": 1.8,
+                "Waste": 0.04,
+                "Digital": 0.18
+            },
+            "comparison": {
+                "india_avg": 1.9,
+                "world_avg": 4.7,
+                "your_value": 7.13,
+                "percentile": 1,
+                "grade": "F"
+            },
+            "suggestions": [
+                {
+                    "action": "Transition to a vegetarian/vegan diet",
+                    "co2_saved_tyr": 0.92,
+                    "category": "Diet",
+                    "difficulty": "Medium",
+                    "rank": 1
+                },
+                {
+                    "action": "Switch to public transport or EV",
+                    "co2_saved_tyr": 0.83,
+                    "category": "Transport",
+                    "difficulty": "Hard",
+                    "rank": 2
+                },
+                {
+                    "action": "Reduce long-haul flights by 1 per year",
+                    "co2_saved_tyr": 0.62,
+                    "category": "Transport",
+                    "difficulty": "Medium",
+                    "rank": 3
+                },
+                {
+                    "action": "Buy second-hand clothes & electronics",
+                    "co2_saved_tyr": 0.36,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 4
+                },
+                {
+                    "action": "Have 3 meat-free days per week",
+                    "co2_saved_tyr": 0.34,
+                    "category": "Diet",
+                    "difficulty": "Easy",
+                    "rank": 5
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "household_size": 2,
+            "electricity_usage_kwh": 250,
+            "heating_source": "none",
+            "vehicle_type": "petrol",
+            "vehicle_km": 800,
+            "flights_short_haul": 1,
+            "flights_long_haul": 0,
+            "diet_type": "non-vegetarian",
+            "grocery_spend_monthly": 300,
+            "waste_kg_weekly": 15,
+            "internet_usage_hours": 6
+        },
+        "prediction": {
+            "total_footprint_tco2e": 7.13,
+            "category_breakdown": {
+                "Transport": 2.07,
+                "Electricity": 0.6,
+                "Diet": 2.3,
+                "Goods": 1.8,
+                "Waste": 0.04,
+                "Digital": 0.18
+            },
+            "comparison": {
+                "india_avg": 1.9,
+                "world_avg": 4.7,
+                "your_value": 7.13,
+                "percentile": 1,
+                "grade": "F"
+            },
+            "suggestions": [
+                {
+                    "action": "Transition to a vegetarian/vegan diet",
+                    "co2_saved_tyr": 0.92,
+                    "category": "Diet",
+                    "difficulty": "Medium",
+                    "rank": 1
+                },
+                {
+                    "action": "Switch to public transport or EV",
+                    "co2_saved_tyr": 0.83,
+                    "category": "Transport",
+                    "difficulty": "Hard",
+                    "rank": 2
+                },
+                {
+                    "action": "Reduce long-haul flights by 1 per year",
+                    "co2_saved_tyr": 0.62,
+                    "category": "Transport",
+                    "difficulty": "Medium",
+                    "rank": 3
+                },
+                {
+                    "action": "Buy second-hand clothes & electronics",
+                    "co2_saved_tyr": 0.36,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 4
+                },
+                {
+                    "action": "Have 3 meat-free days per week",
+                    "co2_saved_tyr": 0.34,
+                    "category": "Diet",
+                    "difficulty": "Easy",
+                    "rank": 5
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "household_size": 2,
+            "electricity_usage_kwh": 200400,
+            "heating_source": "natural gas",
+            "vehicle_type": "electric",
+            "vehicle_km": 1000,
+            "flights_short_haul": 1,
+            "flights_long_haul": 0,
+            "diet_type": "non-vegetarian",
+            "grocery_spend_monthly": 300,
+            "waste_kg_weekly": 15,
+            "internet_usage_hours": 6
+        },
+        "prediction": {
+            "total_footprint_tco2e": 6.51,
+            "category_breakdown": {
+                "Transport": 0.75,
+                "Electricity": 481.56,
+                "Diet": 2.3,
+                "Goods": 1.8,
+                "Waste": 0.04,
+                "Digital": 0.18
+            },
+            "comparison": {
+                "india_avg": 1.9,
+                "world_avg": 4.7,
+                "your_value": 6.51,
+                "percentile": 1,
+                "grade": "D"
+            },
+            "suggestions": [
+                {
+                    "action": "Install solar panels or switch to green energy",
+                    "co2_saved_tyr": 240.78,
+                    "category": "Electricity",
+                    "difficulty": "Hard",
+                    "rank": 1
+                },
+                {
+                    "action": "Use smart thermostats, lower by 2\u00b0C in winter",
+                    "co2_saved_tyr": 48.16,
+                    "category": "Electricity",
+                    "difficulty": "Medium",
+                    "rank": 2
+                },
+                {
+                    "action": "Switch all bulbs to LEDs",
+                    "co2_saved_tyr": 24.08,
+                    "category": "Electricity",
+                    "difficulty": "Easy",
+                    "rank": 3
+                },
+                {
+                    "action": "Transition to a vegetarian/vegan diet",
+                    "co2_saved_tyr": 0.92,
+                    "category": "Diet",
+                    "difficulty": "Medium",
+                    "rank": 4
+                },
+                {
+                    "action": "Buy second-hand clothes & electronics",
+                    "co2_saved_tyr": 0.36,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 5
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "household_size": 2,
+            "electricity_usage_kwh": 200,
+            "heating_source": "natural gas",
+            "vehicle_type": "electric",
+            "vehicle_km": 1000,
+            "flights_short_haul": 1,
+            "flights_long_haul": 0,
+            "diet_type": "non-vegetarian",
+            "grocery_spend_monthly": 300,
+            "waste_kg_weekly": 15,
+            "internet_usage_hours": 6
+        },
+        "prediction": {
+            "total_footprint_tco2e": 6.19,
+            "category_breakdown": {
+                "Transport": 0.75,
+                "Electricity": 1.08,
+                "Diet": 2.3,
+                "Goods": 1.8,
+                "Waste": 0.04,
+                "Digital": 0.18
+            },
+            "comparison": {
+                "india_avg": 1.9,
+                "world_avg": 4.7,
+                "your_value": 6.19,
+                "percentile": 5,
+                "grade": "D"
+            },
+            "suggestions": [
+                {
+                    "action": "Transition to a vegetarian/vegan diet",
+                    "co2_saved_tyr": 0.92,
+                    "category": "Diet",
+                    "difficulty": "Medium",
+                    "rank": 1
+                },
+                {
+                    "action": "Install solar panels or switch to green energy",
+                    "co2_saved_tyr": 0.54,
+                    "category": "Electricity",
+                    "difficulty": "Hard",
+                    "rank": 2
+                },
+                {
+                    "action": "Buy second-hand clothes & electronics",
+                    "co2_saved_tyr": 0.36,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 3
+                },
+                {
+                    "action": "Have 3 meat-free days per week",
+                    "co2_saved_tyr": 0.34,
+                    "category": "Diet",
+                    "difficulty": "Easy",
+                    "rank": 4
+                },
+                {
+                    "action": "Reduce fast-fashion purchases",
+                    "co2_saved_tyr": 0.27,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 5
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "household_size": 2,
+            "electricity_usage_kwh": 200,
+            "heating_source": "natural gas",
+            "vehicle_type": "electric",
+            "vehicle_km": 1000,
+            "flights_short_haul": 1,
+            "flights_long_haul": 0,
+            "diet_type": "non-vegetarian",
+            "grocery_spend_monthly": 300,
+            "waste_kg_weekly": 15,
+            "internet_usage_hours": 6
+        },
+        "prediction": {
+            "total_footprint_tco2e": 6.19,
+            "category_breakdown": {
+                "Transport": 0.75,
+                "Electricity": 1.08,
+                "Diet": 2.3,
+                "Goods": 1.8,
+                "Waste": 0.04,
+                "Digital": 0.18
+            },
+            "comparison": {
+                "india_avg": 1.9,
+                "world_avg": 4.7,
+                "your_value": 6.19,
+                "percentile": 5,
+                "grade": "D"
+            },
+            "suggestions": [
+                {
+                    "action": "Transition to a vegetarian/vegan diet",
+                    "co2_saved_tyr": 0.92,
+                    "category": "Diet",
+                    "difficulty": "Medium",
+                    "rank": 1
+                },
+                {
+                    "action": "Install solar panels or switch to green energy",
+                    "co2_saved_tyr": 0.54,
+                    "category": "Electricity",
+                    "difficulty": "Hard",
+                    "rank": 2
+                },
+                {
+                    "action": "Buy second-hand clothes & electronics",
+                    "co2_saved_tyr": 0.36,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 3
+                },
+                {
+                    "action": "Have 3 meat-free days per week",
+                    "co2_saved_tyr": 0.34,
+                    "category": "Diet",
+                    "difficulty": "Easy",
+                    "rank": 4
+                },
+                {
+                    "action": "Reduce fast-fashion purchases",
+                    "co2_saved_tyr": 0.27,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 5
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "household_size": 2,
+            "electricity_usage_kwh": 350,
+            "heating_source": "natural gas",
+            "vehicle_type": "electric",
+            "vehicle_km": 1000,
+            "flights_short_haul": 1,
+            "flights_long_haul": 0,
+            "diet_type": "non-vegetarian",
+            "grocery_spend_monthly": 300,
+            "waste_kg_weekly": 15,
+            "internet_usage_hours": 6
+        },
+        "prediction": {
+            "total_footprint_tco2e": 6.46,
+            "category_breakdown": {
+                "Transport": 0.75,
+                "Electricity": 1.44,
+                "Diet": 2.3,
+                "Goods": 1.8,
+                "Waste": 0.04,
+                "Digital": 0.18
+            },
+            "comparison": {
+                "india_avg": 1.9,
+                "world_avg": 4.7,
+                "your_value": 6.46,
+                "percentile": 1,
+                "grade": "D"
+            },
+            "suggestions": [
+                {
+                    "action": "Transition to a vegetarian/vegan diet",
+                    "co2_saved_tyr": 0.92,
+                    "category": "Diet",
+                    "difficulty": "Medium",
+                    "rank": 1
+                },
+                {
+                    "action": "Install solar panels or switch to green energy",
+                    "co2_saved_tyr": 0.72,
+                    "category": "Electricity",
+                    "difficulty": "Hard",
+                    "rank": 2
+                },
+                {
+                    "action": "Buy second-hand clothes & electronics",
+                    "co2_saved_tyr": 0.36,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 3
+                },
+                {
+                    "action": "Have 3 meat-free days per week",
+                    "co2_saved_tyr": 0.34,
+                    "category": "Diet",
+                    "difficulty": "Easy",
+                    "rank": 4
+                },
+                {
+                    "action": "Reduce fast-fashion purchases",
+                    "co2_saved_tyr": 0.27,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 5
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "household_size": 2,
+            "electricity_usage_kwh": 250,
+            "heating_source": "none",
+            "vehicle_type": "petrol",
+            "vehicle_km": 800,
+            "flights_short_haul": 1,
+            "flights_long_haul": 0,
+            "diet_type": "non-vegetarian",
+            "grocery_spend_monthly": 300,
+            "waste_kg_weekly": 15,
+            "internet_usage_hours": 6
+        },
+        "prediction": {
+            "total_footprint_tco2e": 7.13,
+            "category_breakdown": {
+                "Transport": 2.07,
+                "Electricity": 0.6,
+                "Diet": 2.3,
+                "Goods": 1.8,
+                "Waste": 0.04,
+                "Digital": 0.18
+            },
+            "comparison": {
+                "india_avg": 1.9,
+                "world_avg": 4.7,
+                "your_value": 7.13,
+                "percentile": 1,
+                "grade": "F"
+            },
+            "suggestions": [
+                {
+                    "action": "Transition to a vegetarian/vegan diet",
+                    "co2_saved_tyr": 0.92,
+                    "category": "Diet",
+                    "difficulty": "Medium",
+                    "rank": 1
+                },
+                {
+                    "action": "Switch to public transport or EV",
+                    "co2_saved_tyr": 0.83,
+                    "category": "Transport",
+                    "difficulty": "Hard",
+                    "rank": 2
+                },
+                {
+                    "action": "Reduce long-haul flights by 1 per year",
+                    "co2_saved_tyr": 0.62,
+                    "category": "Transport",
+                    "difficulty": "Medium",
+                    "rank": 3
+                },
+                {
+                    "action": "Buy second-hand clothes & electronics",
+                    "co2_saved_tyr": 0.36,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 4
+                },
+                {
+                    "action": "Have 3 meat-free days per week",
+                    "co2_saved_tyr": 0.34,
+                    "category": "Diet",
+                    "difficulty": "Easy",
+                    "rank": 5
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "household_size": 2,
+            "electricity_usage_kwh": 250,
+            "heating_source": "none",
+            "vehicle_type": "petrol",
+            "vehicle_km": 800,
+            "flights_short_haul": 1,
+            "flights_long_haul": 0,
+            "diet_type": "non-vegetarian",
+            "grocery_spend_monthly": 300,
+            "waste_kg_weekly": 15,
+            "internet_usage_hours": 6
+        },
+        "prediction": {
+            "total_footprint_tco2e": 7.13,
+            "category_breakdown": {
+                "Transport": 2.07,
+                "Electricity": 0.6,
+                "Diet": 2.3,
+                "Goods": 1.8,
+                "Waste": 0.04,
+                "Digital": 0.18
+            },
+            "comparison": {
+                "india_avg": 1.9,
+                "world_avg": 4.7,
+                "your_value": 7.13,
+                "percentile": 1,
+                "grade": "F"
+            },
+            "suggestions": [
+                {
+                    "action": "Transition to a vegetarian/vegan diet",
+                    "co2_saved_tyr": 0.92,
+                    "category": "Diet",
+                    "difficulty": "Medium",
+                    "rank": 1
+                },
+                {
+                    "action": "Switch to public transport or EV",
+                    "co2_saved_tyr": 0.83,
+                    "category": "Transport",
+                    "difficulty": "Hard",
+                    "rank": 2
+                },
+                {
+                    "action": "Reduce long-haul flights by 1 per year",
+                    "co2_saved_tyr": 0.62,
+                    "category": "Transport",
+                    "difficulty": "Medium",
+                    "rank": 3
+                },
+                {
+                    "action": "Buy second-hand clothes & electronics",
+                    "co2_saved_tyr": 0.36,
+                    "category": "Goods",
+                    "difficulty": "Easy",
+                    "rank": 4
+                },
+                {
+                    "action": "Have 3 meat-free days per week",
+                    "co2_saved_tyr": 0.34,
+                    "category": "Diet",
+                    "difficulty": "Easy",
+                    "rank": 5
+                }
+            ]
+        }
+    }
+]

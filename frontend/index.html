@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carbon Footprint AI</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  
+  <div class="theme-toggle">
+    <button id="themeToggleBtn" aria-label="Toggle theme">🌓 Toggle Theme</button>
+  </div>
+
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Carbon Footprint AI</h1>
+      <p>Calculate your annual emissions and discover smart ways to reduce your impact.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Input Form Section -->
+    <section class="card form-section">
+      <form id="carbonForm">
+        
+        <h2>Your Lifestyle Data</h2>
+        
+        <div class="form-sections">
+        
+          <!-- House & Living -->
+          <div class="form-section-group">
+            <h3 class="group-title"><i class="fa-solid fa-house-chimney"></i> Home & Energy</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="household_size"><i class="fa-solid fa-users"></i> Household Size</label>
+                <input type="number" id="household_size" min="1" max="20" value="2" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="electricity_usage_kwh"><i class="fa-solid fa-bolt"></i> Monthly Electricity (kWh)</label>
+                <input type="number" id="electricity_usage_kwh" min="0" value="250" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="heating_source"><i class="fa-solid fa-fire-burner"></i> Heating Source</label>
+                <select id="heating_source">
+                  <option value="natural gas">Natural Gas</option>
+                  <option value="electricity">Electricity</option>
+                  <option value="oil">Oil</option>
+                  <option value="none" selected>None</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Transport -->
+          <div class="form-section-group">
+            <h3 class="group-title"><i class="fa-solid fa-car"></i> Transportation</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="vehicle_type"><i class="fa-solid fa-gas-pump"></i> Vehicle Type</label>
+                <select id="vehicle_type">
+                  <option value="petrol" selected>Petrol</option>
+                  <option value="diesel">Diesel</option>
+                  <option value="hybrid">Hybrid</option>
+                  <option value="electric">Electric</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="vehicle_km"><i class="fa-solid fa-gauge-high"></i> Monthly Driven (km)</label>
+                <input type="number" id="vehicle_km" min="0" value="800">
+              </div>
+              
+              <div class="form-group">
+                <label for="flights_short_haul"><i class="fa-solid fa-plane-departure"></i> Short-haul Flights/Year</label>
+                <input type="number" id="flights_short_haul" min="0" value="1">
+              </div>
+              
+              <div class="form-group">
+                <label for="flights_long_haul"><i class="fa-solid fa-plane"></i> Long-haul Flights/Year</label>
+                <input type="number" id="flights_long_haul" min="0" value="0">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Diet & Consumption -->
+          <div class="form-section-group">
+            <h3 class="group-title"><i class="fa-solid fa-leaf"></i> Lifestyle & Consumption</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="diet_type"><i class="fa-solid fa-utensils"></i> Diet Type</label>
+                <select id="diet_type">
+                  <option value="non-vegetarian" selected>Non-Vegetarian</option>
+                  <option value="pescatarian">Pescatarian</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="vegan">Vegan</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="grocery_spend_monthly"><i class="fa-solid fa-cart-shopping"></i> Monthly Goods Spend ($)</label>
+                <input type="number" id="grocery_spend_monthly" min="0" value="300">
+              </div>
+              
+              <div class="form-group">
+                <label for="waste_kg_weekly"><i class="fa-solid fa-trash"></i> Weekly Waste (kg)</label>
+                <input type="number" id="waste_kg_weekly" min="0" value="15">
+              </div>
+              
+              <div class="form-group">
+                <label for="internet_usage_hours"><i class="fa-solid fa-wifi"></i> Daily Internet (hours)</label>
+                <input type="number" step="0.1" id="internet_usage_hours" min="0" value="6">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+        <button type="submit" id="predictBtn" class="btn-primary">
+          <span id="btnText">Calculate Footprint</span>
+          <div id="loadingSpinner" class="spinner hidden"></div>
+        </button>
+
+      </form>
+    </section>
+
+    <!-- Results Section -->
+    <section id="resultsSection" class="results-hidden">
+      
+      <div class="score-card">
+        <h3>Your Carbon Footprint</h3>
+        <div class="flex-center">
+          <div class="main-number" id="totalScore">0.00</div>
+          <div class="unit">tCO₂e / year</div>
+        </div>
+        <p class="subtitle">Grade: <strong id="gradeBadge" class="badge">A</strong> | Percentile: <span id="percentileLabel">90</span>% vs. India Average</p>
+      </div>
+
+      <div class="charts-container">
+        <div class="chart-box card">
+          <h3>Category Breakdown</h3>
+          <canvas id="categoryChart"></canvas>
+        </div>
+        <div class="chart-box card">
+          <h3>Comparison</h3>
+          <canvas id="comparisonChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Suggestions Section -->
+      <div class="suggestions-section card">
+        <h3>Smart Reduction Strategies</h3>
+        <div id="suggestionsList" class="suggestions-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- History Section -->
+    <section class="history-section card">
+      <h3>Recent Calculations</h3>
+      <div class="table-container">
+        <table id="historyTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Score (tCO₂e)</th>
+              <th>Grade</th>
+              <th>Top Category</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+  
+  <script src="app.js"></script>
+</body>
+</html>
