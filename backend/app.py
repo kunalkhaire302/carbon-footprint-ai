@@ -3,7 +3,7 @@ from flask_cors import CORS
 import json
 import os
 import subprocess
-from utils import predict_emission, compute_breakdown, generate_suggestions, calculate_percentile_and_grade, INDIA_AVG, WORLD_AVG
+from backend.utils import predict_emission, compute_breakdown, generate_suggestions, calculate_percentile_and_grade, INDIA_AVG, WORLD_AVG
 
 app = Flask(__name__, static_folder='../frontend', static_url_path='/')
 CORS(app)
@@ -85,7 +85,7 @@ def retrain():
             
         # Try reloading the model & preprocessor (Note: in a real WSGI setup this might require restarting workers)
         import joblib
-        import utils
+        from backend import utils
         utils.preprocessor = joblib.load('model/preprocessor.pkl')
         utils.model = joblib.load('model/carbon_model.pkl')
         
