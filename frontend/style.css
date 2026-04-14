@@ -545,12 +545,12 @@ canvas {
   content: '';
   position: absolute;
   left: 0; top: 0; bottom: 0; width: 6px;
-  background: var(--color-green-gradient);
+  background: var(--gradient-nature);
 }
 
 .suggestion-item:hover {
   transform: translateX(8px) scale(1.01);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
   border-color: rgba(16, 185, 129, 0.4);
 }
 
@@ -589,14 +589,76 @@ canvas {
 }
 
 .suggestion-badge {
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--color-green-accent);
+  background: rgba(var(--color-primary-rgb), 0.1);
+  color: var(--color-primary);
   padding: 0.5rem 1rem;
   border-radius: 12px;
   font-weight: 800;
   font-size: 0.95rem;
   white-space: nowrap;
   font-family: 'Outfit', sans-serif;
+}
+
+/* History Table Section */
+.history-section {
+  width: 100%;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 20px;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  margin-top: 1.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 600px; /* Ensure readability on small screens with scroll */
+}
+
+th {
+  padding: 1.5rem;
+  background: rgba(var(--color-primary-rgb), 0.05);
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+td {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+tbody tr {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+tbody tr:hover {
+  background: rgba(var(--color-primary-rgb), 0.05);
+  transform: scale(1.002);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.9rem;
 }
 
 /* Decorative Blobs */
