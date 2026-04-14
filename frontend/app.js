@@ -85,7 +85,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Main score
         const scoreEl = document.getElementById('totalScore');
         const footprint = data.total_footprint_tco2e;
-        scoreEl.innerText = footprint.toFixed(2);
+        
+        // Animate counter
+        const duration = 1500;
+        const startTime = performance.now();
+        function animateCounter(currentTime) {
+            const progress = Math.min((currentTime - startTime) / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            scoreEl.innerText = (footprint * easeOut).toFixed(2);
+            if (progress < 1) requestAnimationFrame(animateCounter);
+            else scoreEl.innerText = footprint.toFixed(2);
+        }
+        requestAnimationFrame(animateCounter);
         
         // Color coding
         scoreEl.className = 'main-number'; // Reset
@@ -138,15 +149,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 datasets: [{
                     data: Object.values(breakdown),
                     backgroundColor: [
-                        '#1a472a', '#2a9d8f', '#e9c46a', '#f4a261', '#e76f51', '#8ab17d'
+                        '#10b981', '#0ea5e9', '#2dd4bf', '#f59e0b', '#ef4444', '#8b5cf6'
                     ],
+                    hoverOffset: 20,
                     borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
+                cutout: '70%',
                 plugins: {
-                    legend: { position: 'bottom', labels: { color: getComputedStyle(document.body).color } }
+                    legend: { 
+                        position: 'bottom', 
+                        labels: { 
+                            color: getComputedStyle(document.body).getPropertyValue('--text-main'),
+                            padding: 20,
+                            font: { family: 'Outfit', size: 12, weight: '600' }
+                        } 
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
                 }
             }
         });
@@ -161,10 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     label: 'Emissions tCO₂e',
                     data: [comp.your_value, comp.india_avg, comp.world_avg],
                     backgroundColor: [
-                        comp.your_value > comp.world_avg ? '#e76f51' : '#52b788',
-                        '#2A9D8F',
-                        '#E9C46A'
-                    ]
+                        comp.your_value > comp.world_avg ? 'rgba(239, 68, 68, 0.8)' : 'rgba(16, 185, 129, 0.8)',
+                        'rgba(14, 165, 233, 0.8)',
+                        'rgba(45, 212, 191, 0.8)'
+                    ],
+                    borderRadius: 12,
+                    borderWidth: 0
                 }]
             },
             options: {
@@ -175,10 +201,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { color: '#94a3b8' }
+                        grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                        ticks: { color: '#94a3b8', font: { family: 'Inter' } }
                     },
                     x: {
-                        ticks: { color: '#94a3b8' }
+                        grid: { display: false },
+                        ticks: { color: '#94a3b8', font: { family: 'Inter', weight: '600' } }
                     }
                 }
             }

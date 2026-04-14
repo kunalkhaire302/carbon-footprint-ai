@@ -8,15 +8,33 @@
   <!-- Chart.js via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   
-  <div class="theme-toggle">
-    <button id="themeToggleBtn" aria-label="Toggle theme">🌓 Toggle Theme</button>
+  <!-- Decorative Background Blobs -->
+  <div class="blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
   </div>
+
+  <nav class="navbar">
+    <div class="nav-content">
+      <div class="logo">
+        <i class="fa-solid fa-leaf"></i>
+        <span>EcoTrack AI</span>
+      </div>
+      <div class="theme-toggle">
+        <button id="themeToggleBtn" aria-label="Toggle theme">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+          <span>Theme</span>
+        </button>
+      </div>
+    </div>
+  </nav>
 
   <header class="hero">
     <div class="hero-content">
@@ -169,7 +187,10 @@
 
     <!-- History Section -->
     <section class="history-section card">
-      <h3>Recent Calculations</h3>
+      <div class="section-header">
+        <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Calculations</h3>
+        <p class="section-subtitle">Monitor your progress over time</p>
+      </div>
       <div class="table-container">
         <table id="historyTable">
           <thead>
@@ -188,6 +209,24 @@
     </section>
 
   </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <i class="fa-solid fa-leaf"></i>
+        <span>EcoTrack AI</span>
+      </div>
+      <p class="footer-text">Empowering sustainable living through artificial intelligence.</p>
+      <div class="footer-links">
+        <a href="#"><i class="fa-brands fa-github"></i> Source</a>
+        <a href="#"><i class="fa-solid fa-book"></i> Methodology</a>
+        <a href="#"><i class="fa-solid fa-envelope"></i> Contact</a>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Carbon Footprint AI. Built with <i class="fa-solid fa-heart" style="color: var(--color-danger);"></i> for the Planet.</p>
+      </div>
+    </div>
+  </footer>
   
   <script src="app.js"></script>
 </body>
