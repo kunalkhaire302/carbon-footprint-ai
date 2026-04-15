@@ -3,6 +3,7 @@ from flask_cors import CORS
 import json
 import os
 import subprocess
+from datetime import datetime, timezone
 from backend.utils import predict_emission, compute_breakdown, generate_suggestions, calculate_percentile_and_grade, INDIA_AVG, WORLD_AVG
 
 app = Flask(__name__, static_folder='../frontend', static_url_path='/')
@@ -60,7 +61,8 @@ def predict():
         history = load_history()
         history.insert(0, {
             "input": data,
-            "prediction": response
+            "prediction": response,
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
         history = history[:10]  # Keep last 10
         save_history(history)

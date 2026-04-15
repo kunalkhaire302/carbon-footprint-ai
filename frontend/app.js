@@ -214,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchAndRenderHistory() {
+        const emptyRow = document.getElementById('historyEmptyRow');
         try {
             // First look in localStorage to cache offline history (Bonus)
             let localHistStr = localStorage.getItem('carbonHistory');
@@ -228,25 +229,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const tbody = document.getElementById('historyBody');
-            tbody.innerHTML = '';
+            // Clear all rows except the empty-state row
+            Array.from(tbody.querySelectorAll('tr:not(#historyEmptyRow)')).forEach(r => r.remove());
             
-            localHist.forEach(record => {
+            if(!localHist || localHist.length === 0) {
+                if(emptyRow) emptyRow.style.display = '';
+                return;
+            }
+
+            // Has records — hide empty state
+            if(emptyRow) emptyRow.style.display = 'none';
+            
+            localHist.forEach((record, idx) => {
                 // Determine top category
                 const bd = record.prediction.category_breakdown;
                 const topCat = Object.keys(bd).reduce((a, b) => bd[a] > bd[b] ? a : b);
                 
+                // Use stored timestamp if available, else today
+                const dateStr = record.timestamp
+                    ? new Date(record.timestamp).toLocaleDateString()
+                    : new Date().toLocaleDateString();
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${new Date().toLocaleDateString()}</td>
+                    <td>${dateStr}</td>
                     <td><strong>${record.prediction.total_footprint_tco2e.toFixed(2)}</strong></td>
                     <td><span class="badge ${record.prediction.comparison.grade}">${record.prediction.comparison.grade}</span></td>
                     <td>${topCat}</td>
                 `;
-                tbody.appendChild(tr);
+                tbody.insertBefore(tr, tbody.querySelector('#historyEmptyRow'));
             });
 
         } catch(err) {
             console.log('Using local storage history due to fetch failure');
+            if(emptyRow) emptyRow.style.display = '';
         }
     }
 

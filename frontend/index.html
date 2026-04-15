@@ -3,8 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carbon Footprint AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="EcoTrack AI — Calculate your annual carbon footprint from lifestyle inputs, get a category breakdown, benchmark against global averages, and discover AI-driven reduction strategies.">
+  <meta name="theme-color" content="#10b981">
+  <title>EcoTrack AI — Carbon Footprint Calculator</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chart.js via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -210,6 +212,11 @@
           </thead>
           <tbody id="historyBody">
             <!-- Populated by JS -->
+            <tr id="historyEmptyRow">
+              <td colspan="4" style="text-align:center; color: var(--text-muted); padding: 2rem; font-style: italic;">
+                <i class="fa-solid fa-clock-rotate-left" style="margin-right:0.5rem; opacity:0.5;"></i>No calculations yet. Fill the form above and click Calculate!
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
