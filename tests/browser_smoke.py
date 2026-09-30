@@ -52,10 +52,14 @@ def run() -> None:
                 assert page.locator("#totalScore").inner_text() != "0.00"
                 assert page.locator("#categorySummary").text_content()
                 assert page.locator("#comparisonSummary").text_content()
+                assert page.locator("#categoryLegend .ledger-item").count() == 6
+                assert page.locator("#breakdownTotal").inner_text() != "—"
                 assert "browser only" in page.locator(".privacy-note").inner_text()
                 assert page.locator("#errorSummary").is_hidden()
                 assert page.locator("#historyBody tr").count() == 2
                 assert not errors, errors
+                if name == "desktop":
+                    page.locator(".charts-container").screenshot(path=SCREENSHOTS / "charts.png")
                 page.screenshot(path=SCREENSHOTS / f"{name}.png", full_page=True)
                 page.close()
             browser.close()

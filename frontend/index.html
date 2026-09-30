@@ -196,14 +196,34 @@
 
       <div class="charts-container">
         <div class="chart-box card">
-          <h3>Category Breakdown</h3>
-          <canvas id="categoryChart" role="img" aria-label="Category emission breakdown chart"></canvas>
-          <p id="categorySummary" class="chart-summary"></p>
+          <div class="chart-heading">
+            <div>
+              <p class="chart-kicker">Emissions anatomy</p>
+              <h3>Where it comes from</h3>
+            </div>
+            <span class="chart-unit">tCO₂e / year</span>
+          </div>
+          <div class="category-chart-layout">
+            <div class="chart-stage donut-stage">
+              <canvas id="categoryChart" role="img" aria-label="Category emission breakdown chart"></canvas>
+              <div class="donut-total" aria-hidden="true"><strong id="breakdownTotal">—</strong><span>mapped</span></div>
+            </div>
+            <div id="categoryLegend" class="category-ledger" aria-label="Emissions by category"></div>
+          </div>
+          <p id="categorySummary" class="chart-insight"></p>
         </div>
         <div class="chart-box card">
-          <h3>Comparison</h3>
-          <canvas id="comparisonChart" role="img" aria-label="Comparison with configured India and global benchmarks"></canvas>
-          <p id="comparisonSummary" class="chart-summary"></p>
+          <div class="chart-heading">
+            <div>
+              <p class="chart-kicker">Benchmark position</p>
+              <h3>How you compare</h3>
+            </div>
+            <span class="chart-unit">annual</span>
+          </div>
+          <div class="chart-stage comparison-stage">
+            <canvas id="comparisonChart" role="img" aria-label="Comparison with configured India and global benchmarks"></canvas>
+          </div>
+          <p id="comparisonSummary" class="chart-insight benchmark-insight"></p>
         </div>
       </div>
 

@@ -12,6 +12,7 @@ All notable changes follow Keep a Changelog; versions follow Semantic Versioning
 ### Changed
 
 - Rename the interface from EcoTrack AI to `carbon-footprint` and redesign it as a responsive climate-observatory experience.
+- Refine the results dashboard with a centered mapped-emissions value, ranked category ledger, and plain-language benchmark comparison.
 
 ## [1.0.0] - 2026-09-30
 

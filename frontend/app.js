@@ -1,4 +1,5 @@
 const API_BASE = document.documentElement.dataset.apiBase || '';
+const CATEGORY_COLORS = {Diet: '#53d9a5', Digital: '#1ea7e1', Electricity: '#32cbbd', Goods: '#ffbd59', Transport: '#ff6b6b', Waste: '#9671ff'};
 
 class ApiClient {
   constructor(baseUrl, timeoutMs = 12000) {
@@ -200,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderCharts(breakdown, comparison) {
     categoryChart?.destroy();
     comparisonChart?.destroy();
+    renderCategoryLedger(breakdown);
     if (!globalThis.Chart) {
       document.getElementById('categoryChart').hidden = true;
       document.getElementById('comparisonChart').hidden = true;
@@ -208,21 +210,85 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('categoryChart').hidden = false;
     document.getElementById('comparisonChart').hidden = false;
     const motion = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const styles = getComputedStyle(document.body);
+    const text = styles.getPropertyValue('--paper').trim();
+    const muted = styles.getPropertyValue('--paper-dim').trim();
+    const line = styles.getPropertyValue('--line').trim();
+    const surface = styles.getPropertyValue('--surface').trim();
+    const labels = Object.keys(breakdown);
     categoryChart = new Chart(document.getElementById('categoryChart'), {
       type: 'doughnut',
-      data: {labels: Object.keys(breakdown), datasets: [{data: Object.values(breakdown), backgroundColor: ['#10b981', '#0ea5e9', '#2dd4bf', '#f59e0b', '#ef4444', '#8b5cf6'], borderWidth: 0}]},
-      options: {responsive: true, maintainAspectRatio: false, animation: motion, cutout: '68%', plugins: {legend: {position: 'bottom', labels: {color: getComputedStyle(document.body).getPropertyValue('--text-main')}}}},
+      data: {labels, datasets: [{data: Object.values(breakdown), backgroundColor: labels.map(label => CATEGORY_COLORS[label] || '#8a9a91'), borderColor: surface, borderWidth: 3, hoverOffset: 5}]},
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: motion ? {duration: 700, easing: 'easeOutQuart'} : false,
+        cutout: '72%',
+        plugins: {
+          legend: {display: false},
+          tooltip: {displayColors: true, callbacks: {label: context => ` ${context.label}: ${context.parsed.toFixed(2)} tCO₂e`}},
+        },
+      },
     });
     comparisonChart = new Chart(document.getElementById('comparisonChart'), {
       type: 'bar',
-      data: {labels: ['You', 'India benchmark', 'Global benchmark'], datasets: [{label: 'tCO₂e/year', data: [comparison.your_value, comparison.india_avg, comparison.world_avg], backgroundColor: ['#10b981', '#0ea5e9', '#2dd4bf'], borderRadius: 8}]},
-      options: {responsive: true, maintainAspectRatio: false, animation: motion, plugins: {legend: {display: false}}, scales: {y: {beginAtZero: true}, x: {grid: {display: false}}}},
+      data: {
+        labels: ['Your estimate', 'India', 'Global'],
+        datasets: [{
+          label: 'tCO₂e / year',
+          data: [comparison.your_value, comparison.india_avg, comparison.world_avg],
+          backgroundColor: ['#b7ff4a', '#356052', '#53d9a5'],
+          borderRadius: 6,
+          borderSkipped: false,
+          maxBarThickness: 72,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: motion ? {duration: 700, easing: 'easeOutQuart'} : false,
+        plugins: {
+          legend: {display: false},
+          tooltip: {callbacks: {label: context => ` ${context.parsed.y.toFixed(2)} tCO₂e / year`}},
+        },
+        scales: {
+          y: {beginAtZero: true, border: {display: false}, grid: {color: line}, ticks: {color: muted, font: {family: 'IBM Plex Mono', size: 10}}},
+          x: {border: {display: false}, grid: {display: false}, ticks: {color: text, font: {family: 'IBM Plex Mono', size: 10}}},
+        },
+      },
     });
   }
 
   function renderChartAlternatives(breakdown, comparison) {
-    document.getElementById('categorySummary').textContent = Object.entries(breakdown).map(([name, value]) => `${name}: ${value.toFixed(2)} tCO₂e/year`).join('; ');
-    document.getElementById('comparisonSummary').textContent = `You: ${comparison.your_value.toFixed(2)}; India benchmark: ${comparison.india_avg.toFixed(2)}; global benchmark: ${comparison.world_avg.toFixed(2)} tonnes CO₂ equivalent per year.`;
+    const entries = Object.entries(breakdown).sort((a, b) => b[1] - a[1]);
+    const total = entries.reduce((sum, [, value]) => sum + value, 0);
+    const [largestName, largestValue] = entries[0];
+    const share = total ? Math.round((largestValue / total) * 100) : 0;
+    document.getElementById('breakdownTotal').textContent = total.toFixed(2);
+    document.getElementById('categorySummary').textContent = `${largestName} is your largest source, accounting for ${share}% of this estimate.`;
+    const delta = comparison.your_value - comparison.world_avg;
+    const direction = delta >= 0 ? 'above' : 'below';
+    document.getElementById('comparisonSummary').textContent = `Your estimate is ${Math.abs(delta).toFixed(2)} tCO₂e ${direction} the configured global benchmark.`;
+  }
+
+  function renderCategoryLedger(breakdown) {
+    const entries = Object.entries(breakdown).sort((a, b) => b[1] - a[1]);
+    const ledger = document.getElementById('categoryLegend');
+    ledger.replaceChildren(...entries.map(([name, value]) => {
+      const item = document.createElement('div');
+      item.className = 'ledger-item';
+      const label = document.createElement('span');
+      label.className = 'ledger-label';
+      const swatch = document.createElement('i');
+      swatch.style.backgroundColor = CATEGORY_COLORS[name] || '#8a9a91';
+      const title = document.createElement('span');
+      title.textContent = name;
+      label.append(swatch, title);
+      const amount = document.createElement('strong');
+      amount.textContent = value.toFixed(2);
+      item.append(label, amount);
+      return item;
+    }));
   }
 
   function saveLocalHistory(data) {

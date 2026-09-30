@@ -166,12 +166,30 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .color-amber, .badge.C { color: var(--amber); }
 .color-red, .badge.D, .badge.E, .badge.F { color: var(--danger); }
 
-.charts-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 1px; background: var(--line); border: 1px solid var(--line); }
-.chart-box { min-width: 0; min-height: 430px; padding: 2rem; box-shadow: none; }
-.chart-box h3 { margin: 0 0 1.5rem; font-family: var(--mono); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; }
-canvas { width: 100% !important; max-width: 100%; height: 300px !important; }
-.chart-summary, .method-note, .privacy-note, .empty-state { color: var(--paper-dim); font-size: .78rem; }
-.chart-summary { margin: 1rem 0 0; }
+.charts-container { display: grid; grid-template-columns: 1.08fr .92fr; gap: 1rem; margin-top: 1rem; }
+.chart-box { min-width: 0; padding: 1.6rem; border-radius: 22px; box-shadow: none; }
+.chart-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; min-height: 54px; }
+.chart-kicker { margin: 0 0 .25rem; color: var(--mint); font-family: var(--mono); font-size: .62rem; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.chart-box .chart-heading h3 { margin: 0; font-family: var(--display); font-size: 1.55rem; font-weight: 560; letter-spacing: -.035em; }
+.chart-unit { flex: 0 0 auto; padding: .35rem .5rem; border: 1px solid var(--line); border-radius: 999px; color: var(--paper-dim); font-family: var(--mono); font-size: .58rem; letter-spacing: .06em; text-transform: uppercase; }
+.category-chart-layout { display: grid; grid-template-columns: minmax(230px, 1.15fr) minmax(150px, .85fr); align-items: center; gap: 1.5rem; margin-top: 1rem; }
+.chart-stage { position: relative; min-width: 0; }
+.donut-stage { height: 255px; }
+.comparison-stage { height: 285px; margin-top: 1rem; }
+.chart-stage canvas { width: 100% !important; max-width: 100%; height: 100% !important; }
+.donut-total { position: absolute; inset: 50% auto auto 50%; display: grid; place-items: center; transform: translate(-50%, -50%); pointer-events: none; }
+.donut-total strong { font-family: var(--display); font-size: 2.15rem; font-weight: 600; letter-spacing: -.07em; line-height: 1; }
+.donut-total span { margin-top: .25rem; color: var(--paper-dim); font-family: var(--mono); font-size: .55rem; letter-spacing: .12em; text-transform: uppercase; }
+.category-ledger { display: grid; align-content: center; gap: .1rem; }
+.ledger-item { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .52rem 0; border-bottom: 1px solid var(--line); }
+.ledger-item:last-child { border-bottom: 0; }
+.ledger-label { display: flex; align-items: center; min-width: 0; gap: .55rem; color: var(--paper-dim); font-size: .72rem; }
+.ledger-label i { flex: 0 0 auto; width: 7px; height: 7px; border-radius: 2px; }
+.ledger-item strong { font-family: var(--mono); font-size: .7rem; font-weight: 500; }
+.chart-insight { min-height: 44px; margin: 1rem 0 0; padding: .85rem 0 0 1rem; border-top: 1px solid var(--line); color: var(--paper-dim); font-size: .76rem; }
+.chart-insight::before { content: '↳'; margin-left: -1rem; padding-right: .35rem; color: var(--signal); font-family: var(--mono); }
+.benchmark-insight { color: var(--paper); }
+.method-note, .privacy-note, .empty-state { color: var(--paper-dim); font-size: .78rem; }
 
 .suggestions-section, .history-section { margin-top: 1px; padding: clamp(2rem, 5vw, 4rem); border-radius: 0; box-shadow: none; }
 .suggestions-section .eyebrow { margin-bottom: .7rem; }
@@ -206,6 +224,7 @@ tbody tr:hover { background: color-mix(in srgb, var(--signal) 3%, transparent); 
   .hero-instrument { max-width: 560px; transform: none; }
   .form-sections { grid-template-columns: 1fr; }
   .charts-container { grid-template-columns: 1fr; }
+  .category-chart-layout { grid-template-columns: minmax(240px, 1fr) minmax(180px, .75fr); }
   .nav-kicker { display: none; }
 }
 
@@ -226,7 +245,11 @@ tbody tr:hover { background: color-mix(in srgb, var(--signal) 3%, transparent); 
   .score-card { border-radius: 20px; }
   .flex-center { display: block; }
   .unit { margin-top: 1rem; }
-  .chart-box { min-height: 380px; padding: 1.25rem; }
+  .chart-box { padding: 1.25rem; }
+  .category-chart-layout { grid-template-columns: 1fr; gap: .75rem; }
+  .donut-stage { height: 240px; }
+  .category-ledger { grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+  .comparison-stage { height: 260px; }
   .suggestions-section, .history-section { padding: 2rem 1rem; }
   .suggestion-item { grid-template-columns: 42px 1fr; }
   .suggestion-badge { grid-column: 2; justify-self: start; }
