@@ -1,10 +1,10 @@
 {
   "model_version": "v1",
   "model_name": "xgboost",
-  "training_date": "2026-09-30T09:03:06.295027+00:00",
+  "training_date": "2026-09-30T17:30:49.361240+00:00",
   "python_version": "3.13.9",
   "scikit_learn_version": "1.7.2",
-  "xgboost_version": "3.4.0",
+  "xgboost_version": "3.2.0",
   "dataset_version": "024068a5335e",
   "dataset_sha256": "024068a5335e1521e2892a5c0bd65ad9565b6c8f02ecc1d3d747e72ac547f792",
   "features": [
@@ -25,26 +25,26 @@
   "validation_methodology": "70/15/15 seeded split; model selection on validation; final report on untouched test; 5-fold CV on training split",
   "metrics": {
     "validation": {
-      "mae": 0.22995218765258785,
-      "rmse": 0.3172597565533208,
-      "r2": 0.9840405527163518,
-      "mape": 0.03360204822953496
+      "mae": 0.23198563308715817,
+      "rmse": 0.3246147139461298,
+      "r2": 0.9832920073313612,
+      "mape": 0.033907412628892485
     },
     "cross_validation": {
       "folds": 5,
-      "r2_mean": 0.9804158905601392,
-      "r2_std": 0.0013135395279513173,
-      "mae_mean": 0.2458235318347386,
-      "rmse_mean": 0.33794800513239404
+      "r2_mean": 0.9808961291123943,
+      "r2_std": 0.0016067233559969155,
+      "mae_mean": 0.2458128754970006,
+      "rmse_mean": 0.33369510095257016
     },
     "test": {
-      "mae": 0.20713639778137205,
-      "rmse": 0.27639029824742456,
-      "r2": 0.9866729753322571,
-      "mape": 0.030025118536998765
+      "mae": 0.21288410608927408,
+      "rmse": 0.2770839135131469,
+      "r2": 0.9866060017319626,
+      "mape": 0.03145318459277937
     }
   },
-  "git_commit_sha": "23695e70d05f595d3bc5bd4005d0aba9c462ef94",
-  "artifact_sha256": "35b1729d6f88ff5291c82130e18b053c4a91c00fa1d14648b9d3be43acd14d63",
+  "git_commit_sha": null,
+  "artifact_sha256": "14ee173597e4643491e370eb5e30982ad7867af162dbac3ff91b802e39a5ed10",
   "limitations": "Trained entirely on formula-generated synthetic data; metrics do not establish real-world accuracy."
 }

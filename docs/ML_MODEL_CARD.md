@@ -15,7 +15,7 @@ Educational estimation and product demonstration from eleven lifestyle fields. T
 
 Selection uses a seeded 70/15/15 split: validation chooses the candidate, the selected estimator is refit on train+validation, and the untouched test set is reported. Five-fold CV runs on the training split.
 
-Actual v1 held-out test results: MAE 0.2071, RMSE 0.2764, R² 0.9867, MAPE 0.0300. These describe synthetic-target recovery only and must not be interpreted as real-world accuracy.
+Actual v1 held-out test results: MAE 0.2129, RMSE 0.2771, R² 0.9866, MAPE 0.0315. These describe synthetic-target recovery only and must not be interpreted as real-world accuracy.
 
 ## Explainability
 

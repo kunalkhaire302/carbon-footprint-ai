@@ -39,9 +39,9 @@ Held-out synthetic test metrics for v1:
 
 | Metric | Result |
 |---|---:|
-| MAE | 0.2071 tCO₂e/year |
-| RMSE | 0.2764 tCO₂e/year |
-| R² | 0.9867 |
+| MAE | 0.2129 tCO₂e/year |
+| RMSE | 0.2771 tCO₂e/year |
+| R² | 0.9866 |
 | MAPE | 3.00% |
 
 These results measure recovery of the synthetic generator only. Read the [model card](docs/ML_MODEL_CARD.md), [pipeline](docs/ML_PIPELINE.md), and [data methodology](docs/DATA_METHODOLOGY.md) before interpreting output.

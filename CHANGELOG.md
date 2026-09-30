@@ -2,6 +2,12 @@
 
 All notable changes follow Keep a Changelog; versions follow Semantic Versioning.
 
+## [Unreleased]
+
+### Fixed
+
+- Pin XGBoost to the PyPI-available 3.2.0 release and regenerate the v1 artifact so Render can install and load the production model.
+
 ## [1.0.0] - 2026-09-30
 
 ### Added
