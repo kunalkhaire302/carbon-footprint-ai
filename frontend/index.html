@@ -9,7 +9,7 @@
   <title>EcoTrack AI — Carbon Footprint Calculator</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chart.js via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <!-- Google Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;600;700;800;900&display=swap"
@@ -19,6 +19,8 @@
 </head>
 
 <body>
+  <a class="skip-link" href="#calculator">Skip to calculator</a>
+  <div id="statusRegion" class="sr-only" role="status" aria-live="polite"></div>
 
   <!-- Decorative Background Blobs -->
   <div class="blob-container">
@@ -52,10 +54,11 @@
   <main class="container">
 
     <!-- Input Form Section -->
-    <section class="card form-section">
-      <form id="carbonForm">
+    <section id="calculator" class="card form-section" aria-labelledby="calculator-title">
+      <form id="carbonForm" novalidate>
 
-        <h2>Your Lifestyle Data</h2>
+        <h2 id="calculator-title">Your Lifestyle Data</h2>
+        <div id="errorSummary" class="error-summary" role="alert" tabindex="-1" hidden></div>
 
         <div class="form-sections">
 
@@ -70,7 +73,7 @@
 
               <div class="form-group">
                 <label for="electricity_usage_kwh"><i class="fa-solid fa-bolt"></i> Monthly Electricity (kWh)</label>
-                <input type="number" id="electricity_usage_kwh" min="0" value="250" required>
+                <input type="number" id="electricity_usage_kwh" min="0" max="10000" value="250" required>
               </div>
 
               <div class="form-group">
@@ -102,18 +105,18 @@
 
               <div class="form-group">
                 <label for="vehicle_km"><i class="fa-solid fa-gauge-high"></i> Monthly Driven (km)</label>
-                <input type="number" id="vehicle_km" min="0" value="800">
+                <input type="number" id="vehicle_km" min="0" max="20000" value="800" required>
               </div>
 
               <div class="form-group">
                 <label for="flights_short_haul"><i class="fa-solid fa-plane-departure"></i> Short-haul
                   Flights/Year</label>
-                <input type="number" id="flights_short_haul" min="0" value="1">
+                <input type="number" id="flights_short_haul" min="0" max="100" value="1" required>
               </div>
 
               <div class="form-group">
                 <label for="flights_long_haul"><i class="fa-solid fa-plane"></i> Long-haul Flights/Year</label>
-                <input type="number" id="flights_long_haul" min="0" value="0">
+                <input type="number" id="flights_long_haul" min="0" max="100" value="0" required>
               </div>
             </div>
           </div>
@@ -135,17 +138,17 @@
               <div class="form-group">
                 <label for="grocery_spend_monthly"><i class="fa-solid fa-cart-shopping"></i> Monthly Goods Spend
                   ($)</label>
-                <input type="number" id="grocery_spend_monthly" min="0" value="300">
+                <input type="number" id="grocery_spend_monthly" min="0" max="100000" value="300" required>
               </div>
 
               <div class="form-group">
                 <label for="waste_kg_weekly"><i class="fa-solid fa-trash"></i> Weekly Waste (kg)</label>
-                <input type="number" id="waste_kg_weekly" min="0" value="15">
+                <input type="number" id="waste_kg_weekly" min="0" max="500" value="15" required>
               </div>
 
               <div class="form-group">
                 <label for="internet_usage_hours"><i class="fa-solid fa-wifi"></i> Daily Internet (hours)</label>
-                <input type="number" step="0.1" id="internet_usage_hours" min="0" value="6">
+                <input type="number" step="0.1" id="internet_usage_hours" min="0" max="24" value="6" required>
               </div>
             </div>
           </div>
@@ -161,26 +164,29 @@
     </section>
 
     <!-- Results Section -->
-    <section id="resultsSection" class="results-hidden">
+    <section id="resultsSection" class="results-hidden" tabindex="-1" aria-labelledby="results-title">
 
       <div class="score-card">
-        <h3>Your Carbon Footprint</h3>
+        <h3 id="results-title">Your Carbon Footprint</h3>
         <div class="flex-center">
           <div class="main-number" id="totalScore">0.00</div>
           <div class="unit">tCO₂e / year</div>
         </div>
         <p class="subtitle">Grade: <strong id="gradeBadge" class="badge">A</strong> | Percentile: <span
             id="percentileLabel">90</span>% vs. India Average</p>
+        <p class="method-note">Synthetic-data model estimate · model <span id="modelVersion">—</span> · not a certified carbon audit</p>
       </div>
 
       <div class="charts-container">
         <div class="chart-box card">
           <h3>Category Breakdown</h3>
-          <canvas id="categoryChart"></canvas>
+          <canvas id="categoryChart" role="img" aria-label="Category emission breakdown chart"></canvas>
+          <p id="categorySummary" class="chart-summary"></p>
         </div>
         <div class="chart-box card">
           <h3>Comparison</h3>
-          <canvas id="comparisonChart"></canvas>
+          <canvas id="comparisonChart" role="img" aria-label="Comparison with configured India and global benchmarks"></canvas>
+          <p id="comparisonSummary" class="chart-summary"></p>
         </div>
       </div>
 
@@ -220,6 +226,8 @@
           </tbody>
         </table>
       </div>
+      <p id="historyEmpty" class="empty-state">No calculations saved on this device yet.</p>
+      <p class="privacy-note">Recent calculations stay in this browser only. The API does not store your lifestyle inputs.</p>
     </section>
 
   </main>
@@ -232,7 +240,7 @@
       </div>
       <p class="footer-text">Empowering sustainable living through artificial intelligence.</p>
       <div class="footer-links">
-        <a href="https://github.com/kunalkhaire302/ai-money-mentor"><i class="fa-brands fa-github"></i> Source</a>
+        <a href="https://github.com/kunalkhaire302/carbon-footprint-ai"><i class="fa-brands fa-github"></i> Source</a>
       </div>
       <div class="footer-bottom">
         <p>&copy; 2026 Carbon Footprint AI. Built with <i class="fa-solid fa-heart"
@@ -241,7 +249,7 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script defer src="app.js"></script>
 </body>
 
 </html>
