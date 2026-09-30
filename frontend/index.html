@@ -4,15 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="EcoTrack AI — Calculate your annual carbon footprint from lifestyle inputs, get a category breakdown, benchmark against global averages, and discover AI-driven reduction strategies.">
-  <meta name="theme-color" content="#10b981">
-  <title>EcoTrack AI — Carbon Footprint Calculator</title>
+  <meta name="description" content="carbon-footprint — A private, explainable estimate of your annual lifestyle emissions with practical reduction actions.">
+  <meta name="theme-color" content="#0b1712">
+  <title>carbon-footprint — Personal Emissions Intelligence</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chart.js via CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <!-- Google Fonts -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;600;700;800;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap"
     rel="stylesheet">
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,19 +21,13 @@
   <a class="skip-link" href="#calculator">Skip to calculator</a>
   <div id="statusRegion" class="sr-only" role="status" aria-live="polite"></div>
 
-  <!-- Decorative Background Blobs -->
-  <div class="blob-container">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-  </div>
-
-  <nav class="navbar">
+  <nav class="navbar" aria-label="Primary navigation">
     <div class="nav-content">
-      <div class="logo">
-        <i class="fa-solid fa-leaf"></i>
-        <span>EcoTrack AI</span>
-      </div>
+      <a class="logo" href="#top" aria-label="carbon-footprint home">
+        <span class="brand-mark" aria-hidden="true">C°</span>
+        <span>carbon-footprint</span>
+      </a>
+      <span class="nav-kicker">Personal emissions intelligence</span>
       <div class="theme-toggle">
         <button id="themeToggleBtn" aria-label="Toggle theme">
           <i class="fa-solid fa-circle-half-stroke"></i>
@@ -44,10 +37,26 @@
     </div>
   </nav>
 
-  <header class="hero">
-    <div class="hero-content">
-      <h1>Carbon Footprint AI</h1>
-      <p>Calculate your annual emissions and discover smart ways to reduce your impact.</p>
+  <header id="top" class="hero">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <p class="eyebrow">Climate data, made personal</p>
+        <h1>Measure the life<br><em>you live.</em></h1>
+        <p class="hero-lede">Turn everyday choices into a clear annual emissions estimate—and a practical plan to lower it.</p>
+        <div class="hero-actions">
+          <a class="hero-cta" href="#calculator">Build your footprint <span aria-hidden="true">↓</span></a>
+          <span class="privacy-chip"><i class="fa-solid fa-lock" aria-hidden="true"></i> Private by design</span>
+        </div>
+      </div>
+      <aside class="hero-instrument" aria-label="Calculator overview">
+        <div class="instrument-top"><span>MODEL / V1</span><span class="live-dot">Ready</span></div>
+        <div class="instrument-dial" aria-hidden="true"><span>6</span><small>impact<br>categories</small></div>
+        <div class="instrument-grid">
+          <div><strong>11</strong><span>lifestyle signals</span></div>
+          <div><strong>≈ 60s</strong><span>to complete</span></div>
+          <div><strong>0</strong><span>profiles stored</span></div>
+        </div>
+      </aside>
     </div>
   </header>
 
@@ -57,13 +66,20 @@
     <section id="calculator" class="card form-section" aria-labelledby="calculator-title">
       <form id="carbonForm" novalidate>
 
-        <h2 id="calculator-title">Your Lifestyle Data</h2>
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">01 / Calculator</p>
+            <h2 id="calculator-title">Map your footprint.</h2>
+            <p>Use a typical month or week. Honest estimates are more useful than perfect numbers.</p>
+          </div>
+          <span class="section-count">11 signals</span>
+        </div>
         <div id="errorSummary" class="error-summary" role="alert" tabindex="-1" hidden></div>
 
         <div class="form-sections">
 
           <!-- House & Living -->
-          <div class="form-section-group">
+          <div class="form-section-group" data-step="01">
             <h3 class="group-title"><i class="fa-solid fa-house-chimney"></i> Home & Energy</h3>
             <div class="form-grid">
               <div class="form-group">
@@ -89,7 +105,7 @@
           </div>
 
           <!-- Transport -->
-          <div class="form-section-group">
+          <div class="form-section-group" data-step="02">
             <h3 class="group-title"><i class="fa-solid fa-car"></i> Transportation</h3>
             <div class="form-grid">
               <div class="form-group">
@@ -122,7 +138,7 @@
           </div>
 
           <!-- Diet & Consumption -->
-          <div class="form-section-group">
+          <div class="form-section-group" data-step="03">
             <h3 class="group-title"><i class="fa-solid fa-leaf"></i> Lifestyle & Consumption</h3>
             <div class="form-grid">
               <div class="form-group">
@@ -156,7 +172,7 @@
         </div>
 
         <button type="submit" id="predictBtn" class="btn-primary">
-          <span id="btnText">Calculate Footprint</span>
+          <span id="btnText">Calculate my footprint</span>
           <div id="loadingSpinner" class="spinner hidden"></div>
         </button>
 
@@ -167,13 +183,14 @@
     <section id="resultsSection" class="results-hidden" tabindex="-1" aria-labelledby="results-title">
 
       <div class="score-card">
-        <h3 id="results-title">Your Carbon Footprint</h3>
+        <p class="eyebrow">02 / Your result</p>
+        <h3 id="results-title">Your annual footprint</h3>
         <div class="flex-center">
           <div class="main-number" id="totalScore">0.00</div>
           <div class="unit">tCO₂e / year</div>
         </div>
-        <p class="subtitle">Grade: <strong id="gradeBadge" class="badge">A</strong> | Percentile: <span
-            id="percentileLabel">90</span>% vs. India Average</p>
+        <p class="subtitle">Grade <strong id="gradeBadge" class="badge">A</strong> · <span
+            id="percentileLabel">90</span>% comparison band</p>
         <p class="method-note">Synthetic-data model estimate · model <span id="modelVersion">—</span> · not a certified carbon audit</p>
       </div>
 
@@ -192,7 +209,8 @@
 
       <!-- Suggestions Section -->
       <div class="suggestions-section card">
-        <h3>Smart Reduction Strategies</h3>
+        <p class="eyebrow">03 / Action plan</p>
+        <h3>Start with the biggest levers.</h3>
         <div id="suggestionsList" class="suggestions-grid">
           <!-- Populated by JS -->
         </div>
@@ -203,8 +221,12 @@
     <!-- History Section -->
     <section class="history-section card">
       <div class="section-header">
-        <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Calculations</h3>
-        <p class="section-subtitle">Monitor your progress over time</p>
+        <div>
+          <p class="eyebrow">04 / Local history</p>
+          <h3>See what changed.</h3>
+          <p class="section-subtitle">A private snapshot of calculations made on this device.</p>
+        </div>
+        <button id="clearHistoryBtn" class="btn-quiet" type="button" hidden>Clear history</button>
       </div>
       <div class="table-container">
         <table id="historyTable">
@@ -216,14 +238,7 @@
               <th>Top Category</th>
             </tr>
           </thead>
-          <tbody id="historyBody">
-            <!-- Populated by JS -->
-            <tr id="historyEmptyRow">
-              <td colspan="4" style="text-align:center; color: var(--text-muted); padding: 2rem; font-style: italic;">
-                <i class="fa-solid fa-clock-rotate-left" style="margin-right:0.5rem; opacity:0.5;"></i>No calculations yet. Fill the form above and click Calculate!
-              </td>
-            </tr>
-          </tbody>
+          <tbody id="historyBody"></tbody>
         </table>
       </div>
       <p id="historyEmpty" class="empty-state">No calculations saved on this device yet.</p>
@@ -235,15 +250,15 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-logo">
-        <i class="fa-solid fa-leaf"></i>
-        <span>EcoTrack AI</span>
+        <span class="brand-mark" aria-hidden="true">C°</span>
+        <span>carbon-footprint</span>
       </div>
-      <p class="footer-text">Empowering sustainable living through artificial intelligence.</p>
+      <p class="footer-text">Clearer climate choices, grounded in your everyday life.</p>
       <div class="footer-links">
         <a href="https://github.com/kunalkhaire302/carbon-footprint-ai"><i class="fa-brands fa-github"></i> Source</a>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 Carbon Footprint AI. Built with <i class="fa-solid fa-heart"
+        <p>&copy; 2026 carbon-footprint. Built with <i class="fa-solid fa-heart"
             style="color: var(--color-danger);"></i> for the Planet.</p>
       </div>
     </div>

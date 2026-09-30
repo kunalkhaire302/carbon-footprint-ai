@@ -28,16 +28,33 @@ def run() -> None:
                 page = browser.new_page(viewport=viewport)
                 errors: list[str] = []
                 page.on("pageerror", lambda error, sink=errors: sink.append(str(error)))
+                theme = "dark" if name == "desktop" else "light"
+                page.add_init_script(f"localStorage.setItem('theme', '{theme}');")
+                page.add_init_script(
+                    """
+                    localStorage.setItem('carbonHistory', JSON.stringify([{
+                      timestamp: '2026-01-01T00:00:00Z',
+                      prediction: {
+                        total_footprint_tco2e: 4.2,
+                        comparison: {grade: 'C'},
+                        category_breakdown: {Transport: 2.1, Electricity: 1.2}
+                      }
+                    }]));
+                    """
+                )
                 page.goto("http://127.0.0.1:5001", wait_until="networkidle")
-                assert page.get_by_role("heading", name="Carbon Footprint AI").is_visible()
-                assert page.get_by_role("button", name="Calculate Footprint").is_visible()
-                page.get_by_role("button", name="Calculate Footprint").click()
+                assert page.locator("h1").get_by_text("Measure the life").is_visible()
+                assert page.get_by_role("button", name="Calculate my footprint").is_visible()
+                assert page.locator("#historyBody tr").count() == 1
+                page.get_by_role("button", name="Calculate my footprint").click()
                 page.locator("#resultsSection.results-visible").wait_for()
                 page.wait_for_function("document.querySelector('#categorySummary').textContent.length > 0")
                 assert page.locator("#totalScore").inner_text() != "0.00"
                 assert page.locator("#categorySummary").text_content()
                 assert page.locator("#comparisonSummary").text_content()
                 assert "browser only" in page.locator(".privacy-note").inner_text()
+                assert page.locator("#errorSummary").is_hidden()
+                assert page.locator("#historyBody tr").count() == 2
                 assert not errors, errors
                 page.screenshot(path=SCREENSHOTS / f"{name}.png", full_page=True)
                 page.close()

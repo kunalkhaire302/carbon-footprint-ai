@@ -52,8 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusRegion = document.getElementById('statusRegion');
   const errorSummary = document.getElementById('errorSummary');
   const themeBtn = document.getElementById('themeToggleBtn');
+  const clearHistoryBtn = document.getElementById('clearHistoryBtn');
   let categoryChart = null;
   let comparisonChart = null;
+  let lastResult = null;
 
   const preferredTheme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
   document.documentElement.dataset.theme = preferredTheme;
@@ -64,6 +66,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem('theme', theme);
     updateThemeButton();
+    if (lastResult) renderCharts(lastResult.category_breakdown, lastResult.comparison);
+  });
+
+  clearHistoryBtn.addEventListener('click', () => {
+    localStorage.removeItem('carbonHistory');
+    renderLocalHistory();
+    statusRegion.textContent = 'Calculation history cleared from this browser.';
   });
 
   function updateThemeButton() {
@@ -87,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       resultsSection.focus({preventScroll: true});
       resultsSection.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
     } catch (error) {
-      showError(error);
+      showError(error instanceof ApiError ? error : new ApiError(0, null, null, 'We could not display your result. Please refresh and try again.'));
     } finally {
       setLoading(false);
     }
@@ -149,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderResults(data) {
+    lastResult = data;
     const footprint = data.prediction.total_tco2e_per_year;
     document.getElementById('totalScore').textContent = footprint.toFixed(2);
     const grade = data.grade.letter;
@@ -190,6 +200,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderCharts(breakdown, comparison) {
     categoryChart?.destroy();
     comparisonChart?.destroy();
+    if (!globalThis.Chart) {
+      document.getElementById('categoryChart').hidden = true;
+      document.getElementById('comparisonChart').hidden = true;
+      return;
+    }
+    document.getElementById('categoryChart').hidden = false;
+    document.getElementById('comparisonChart').hidden = false;
     const motion = !matchMedia('(prefers-reduced-motion: reduce)').matches;
     categoryChart = new Chart(document.getElementById('categoryChart'), {
       type: 'doughnut',
@@ -209,13 +226,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function saveLocalHistory(data) {
-    const history = JSON.parse(localStorage.getItem('carbonHistory') || '[]');
+    const history = readLocalHistory();
     history.unshift({createdAt: new Date().toISOString(), total: data.prediction.total_tco2e_per_year, grade: data.grade.letter, breakdown: data.category_breakdown});
-    localStorage.setItem('carbonHistory', JSON.stringify(history.slice(0, 10)));
+    try {
+      localStorage.setItem('carbonHistory', JSON.stringify(history.slice(0, 10)));
+    } catch {
+      // A blocked or full local store must not turn a successful calculation into an error.
+    }
   }
 
   function renderLocalHistory() {
-    const history = JSON.parse(localStorage.getItem('carbonHistory') || '[]');
+    const history = readLocalHistory();
     const rows = history.map(record => {
       const row = document.createElement('tr');
       const top = Object.entries(record.breakdown).sort((a, b) => b[1] - a[1])[0]?.[0] || '—';
@@ -228,6 +249,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('historyBody').replaceChildren(...rows);
     document.getElementById('historyEmpty').hidden = rows.length > 0;
+    clearHistoryBtn.hidden = rows.length === 0;
+  }
+
+  function readLocalHistory() {
+    let stored;
+    try {
+      stored = JSON.parse(localStorage.getItem('carbonHistory') || '[]');
+    } catch {
+      return [];
+    }
+    if (!Array.isArray(stored)) return [];
+    const history = stored.map(normalizeHistoryRecord).filter(Boolean).slice(0, 10);
+    try {
+      localStorage.setItem('carbonHistory', JSON.stringify(history));
+    } catch {
+      // Reading history still works when browser storage becomes unavailable.
+    }
+    return history;
+  }
+
+  function normalizeHistoryRecord(record) {
+    if (!record || typeof record !== 'object') return null;
+    const legacy = record.prediction && typeof record.prediction === 'object' ? record.prediction : null;
+    const breakdown = record.breakdown || legacy?.category_breakdown;
+    const total = Number(record.total ?? legacy?.total_footprint_tco2e);
+    const grade = record.grade || legacy?.comparison?.grade;
+    const createdAt = record.createdAt || record.timestamp || new Date().toISOString();
+    if (!breakdown || typeof breakdown !== 'object' || !Number.isFinite(total) || typeof grade !== 'string') return null;
+    const cleanBreakdown = Object.fromEntries(Object.entries(breakdown).filter(([, value]) => Number.isFinite(Number(value))).map(([key, value]) => [key, Number(value)]));
+    if (!Object.keys(cleanBreakdown).length) return null;
+    return {createdAt, total, grade, breakdown: cleanBreakdown};
   }
 
   renderLocalHistory();

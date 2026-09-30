@@ -7,6 +7,11 @@ All notable changes follow Keep a Changelog; versions follow Semantic Versioning
 ### Fixed
 
 - Pin XGBoost to the PyPI-available 3.2.0 release and regenerate the v1 artifact so Render can install and load the production model.
+- Migrate legacy browser-history records safely instead of failing with `Cannot convert undefined or null to object` after prediction.
+
+### Changed
+
+- Rename the interface from EcoTrack AI to `carbon-footprint` and redesign it as a responsive climate-observatory experience.
 
 ## [1.0.0] - 2026-09-30
 
