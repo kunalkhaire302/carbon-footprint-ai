@@ -1,0 +1,93 @@
+openapi: 3.1.0
+info:
+  title: Carbon Footprint API
+  version: 1.0.0
+  description: Educational synthetic-data carbon estimate API. Not a certified carbon audit.
+paths:
+  /api/v1/health:
+    get:
+      responses:
+        "200": {description: Service process is available}
+  /api/v1/ready:
+    get:
+      responses:
+        "200": {description: Model is ready}
+        "503": {description: Model is unavailable}
+  /api/v1/version:
+    get:
+      responses:
+        "200": {description: Application, API, and model versions}
+  /api/v1/metadata:
+    get:
+      responses:
+        "200": {description: Model metadata and privacy policy}
+  /api/v1/predict:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/PredictionInput"}
+      responses:
+        "200":
+          description: Estimate created
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/PredictionResponse"}
+        "400": {$ref: "#/components/responses/Error"}
+        "413": {$ref: "#/components/responses/Error"}
+        "415": {$ref: "#/components/responses/Error"}
+        "422": {$ref: "#/components/responses/Error"}
+        "429": {$ref: "#/components/responses/Error"}
+        "503": {$ref: "#/components/responses/Error"}
+components:
+  responses:
+    Error:
+      description: Structured error
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+  schemas:
+    PredictionInput:
+      type: object
+      additionalProperties: false
+      required: [electricity_usage_kwh, vehicle_type, vehicle_km, flights_short_haul, flights_long_haul, diet_type, waste_kg_weekly, household_size, grocery_spend_monthly, heating_source, internet_usage_hours]
+      properties:
+        electricity_usage_kwh: {type: number, minimum: 0, maximum: 10000}
+        vehicle_type: {type: string, enum: [petrol, diesel, hybrid, electric, none]}
+        vehicle_km: {type: number, minimum: 0, maximum: 20000}
+        flights_short_haul: {type: integer, minimum: 0, maximum: 100}
+        flights_long_haul: {type: integer, minimum: 0, maximum: 100}
+        diet_type: {type: string, enum: [vegan, vegetarian, pescatarian, non-vegetarian]}
+        waste_kg_weekly: {type: number, minimum: 0, maximum: 500}
+        household_size: {type: integer, minimum: 1, maximum: 20}
+        grocery_spend_monthly: {type: number, minimum: 0, maximum: 100000}
+        heating_source: {type: string, enum: [natural gas, oil, electricity, none]}
+        internet_usage_hours: {type: number, minimum: 0, maximum: 24}
+    PredictionResponse:
+      type: object
+      required: [prediction, grade, breakdown, benchmark, recommendations, model, metadata]
+      properties:
+        prediction:
+          type: object
+          properties:
+            total_tco2e_per_year: {type: number}
+            confidence: {type: [number, "null"]}
+        grade: {type: object}
+        breakdown: {type: array, items: {type: object}}
+        benchmark: {type: object}
+        recommendations: {type: array, items: {type: object}}
+        model: {type: object}
+        metadata: {type: object}
+    ErrorResponse:
+      type: object
+      required: [error, request_id]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: {type: string}
+            message: {type: string}
+            fields: {type: object, additionalProperties: {type: string}}
+        request_id: {type: string}

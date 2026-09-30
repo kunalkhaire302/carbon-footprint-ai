@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: pip install --requirement requirements-dev.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: ruff check backend scripts tests
+      - run: black --check backend scripts tests
+      - run: mypy backend/app
+      - run: bandit -q -r backend scripts -x tests
+      - run: pip-audit --requirement requirements.txt
+      - run: pytest --cov=backend.app --cov-report=term-missing
+      - run: python -m scripts.evaluate_model
+      - run: python -m scripts.smoke_test --local
+      - run: python -m tests.browser_smoke
