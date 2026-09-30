@@ -2,10 +2,24 @@ services:
   - type: web
     name: carbon-footprint-predictor
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn backend.app:app"
+    buildCommand: "pip install --requirement requirements.txt"
+    startCommand: "gunicorn --workers 2 --threads 2 --timeout 30 --max-requests 1000 --max-requests-jitter 100 --access-logfile - backend.app:app"
+    healthCheckPath: /ready
+    autoDeploy: true
     envVars:
       - key: PYTHON_VERSION
-        value: 3.10.0
-      - key: PORT
-        value: 5000
+        value: 3.13.9
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: MODEL_VERSION
+        value: v1
+      - key: MODEL_PATH
+        value: model/registry/v1/pipeline.joblib
+      - key: MODEL_METADATA_PATH
+        value: model/registry/v1/metadata.json
+      - key: ALLOWED_CORS_ORIGINS
+        value: https://carbon-footprint-ai.onrender.com
+      - key: PREDICTION_RATE_LIMIT_PER_MINUTE
+        value: 30
