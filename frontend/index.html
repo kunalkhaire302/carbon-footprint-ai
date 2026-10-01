@@ -11,7 +11,7 @@
   <!-- Chart.js via CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet">
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -24,15 +24,23 @@
   <nav class="navbar" aria-label="Primary navigation">
     <div class="nav-content">
       <a class="logo" href="#top" aria-label="carbon-footprint home">
-        <span class="brand-mark" aria-hidden="true">C°</span>
+        <span class="brand-mark" aria-hidden="true">●</span>
         <span>carbon-footprint</span>
+        <span class="brand-status">Intelligence</span>
       </a>
-      <span class="nav-kicker">Personal emissions intelligence</span>
-      <div class="theme-toggle">
+      <div class="nav-links" aria-label="Page sections">
+        <a href="#calculator">Calculator</a>
+        <a href="#resultsSection">Result</a>
+        <a href="#breakdown">Breakdown</a>
+        <a href="#action-plan">Action plan</a>
+        <a href="#history">History</a>
+      </div>
+      <div class="nav-actions">
         <button id="themeToggleBtn" aria-label="Toggle theme">
           <i class="fa-solid fa-circle-half-stroke"></i>
-          <span>Theme</span>
+          <span>Dark theme</span>
         </button>
+        <a class="nav-cta" href="#calculator">Calculate <span aria-hidden="true">↓</span></a>
       </div>
     </div>
   </nav>
@@ -41,11 +49,17 @@
     <div class="hero-grid">
       <div class="hero-content">
         <p class="eyebrow">Climate data, made personal</p>
-        <h1>Measure the life<br><em>you live.</em></h1>
+        <h1>Measure the<br><span class="accent-lime">footprint</span><br><em>behind the life</em> <span class="accent-mint">you<br>live.</span></h1>
         <p class="hero-lede">Turn everyday choices into a clear annual emissions estimate—and a practical plan to lower it.</p>
         <div class="hero-actions">
           <a class="hero-cta" href="#calculator">Build your footprint <span aria-hidden="true">↓</span></a>
           <span class="privacy-chip"><i class="fa-solid fa-lock" aria-hidden="true"></i> Private by design</span>
+          <span class="privacy-chip">No server logs</span>
+        </div>
+        <div class="hero-metrics" aria-label="Product facts">
+          <span><strong>11</strong> signals</span>
+          <span><strong>&lt;60s</strong> completion</span>
+          <span><strong>100%</strong> client-side history</span>
         </div>
       </div>
       <aside class="hero-instrument" aria-label="Calculator overview">
@@ -194,7 +208,7 @@
         <p class="method-note">Synthetic-data model estimate · model <span id="modelVersion">—</span> · not a certified carbon audit</p>
       </div>
 
-      <div class="charts-container">
+      <div id="breakdown" class="charts-container">
         <div class="chart-box card">
           <div class="chart-heading">
             <div>
@@ -227,8 +241,17 @@
         </div>
       </div>
 
+      <aside class="insight-strip card" aria-labelledby="insight-title">
+        <span class="insight-icon" aria-hidden="true">↗</span>
+        <div>
+          <p id="insight-title" class="chart-kicker">Estimate insight</p>
+          <p id="insightText">Your strongest reduction opportunity will appear after calculation.</p>
+        </div>
+        <a href="#action-plan">Explore <span id="insightCount">0</span> levers <span aria-hidden="true">›</span></a>
+      </aside>
+
       <!-- Suggestions Section -->
-      <div class="suggestions-section card">
+      <div id="action-plan" class="suggestions-section card">
         <p class="eyebrow">03 / Action plan</p>
         <h3>Start with the biggest levers.</h3>
         <div id="suggestionsList" class="suggestions-grid">
@@ -239,7 +262,7 @@
     </section>
 
     <!-- History Section -->
-    <section class="history-section card">
+    <section id="history" class="history-section card">
       <div class="section-header">
         <div>
           <p class="eyebrow">04 / Local history</p>
@@ -270,16 +293,21 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-logo">
-        <span class="brand-mark" aria-hidden="true">C°</span>
+        <span class="brand-mark" aria-hidden="true">●</span>
         <span>carbon-footprint</span>
       </div>
-      <p class="footer-text">Clearer climate choices, grounded in your everyday life.</p>
-      <div class="footer-links">
-        <a href="https://github.com/kunalkhaire302/carbon-footprint-ai"><i class="fa-brands fa-github"></i> Source</a>
+      <div class="footer-intro">
+        <p class="footer-text">Clearer climate choices, grounded in your everyday life. Transparent estimates and action planning from open source.</p>
+        <a class="source-link" href="https://github.com/kunalkhaire302/carbon-footprint-ai"><i class="fa-brands fa-github"></i> Open source climate intelligence</a>
+      </div>
+      <div class="footer-nav">
+        <div><strong>Product</strong><a href="#calculator">Calculator</a><a href="#breakdown">Breakdown</a><a href="#action-plan">Action levers</a></div>
+        <div><strong>Standards</strong><a href="https://github.com/kunalkhaire302/carbon-footprint-ai/blob/main/docs/ML_MODEL_CARD.md">Model card</a><a href="https://github.com/kunalkhaire302/carbon-footprint-ai/blob/main/docs/DATA_METHODOLOGY.md">Data methodology</a><a href="https://github.com/kunalkhaire302/carbon-footprint-ai/blob/main/docs/API.md">API reference</a></div>
+        <div><strong>Privacy</strong><span>Local-only history</span><span>No profile storage</span><span>Open auditing</span></div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 carbon-footprint. Built with <i class="fa-solid fa-heart"
-            style="color: var(--color-danger);"></i> for the Planet.</p>
+        <p>&copy; 2026 carbon-footprint. Made and developed by Kunal Khaire.</p>
+        <p>All personal calculations remain on this device.</p>
       </div>
     </div>
   </footer>

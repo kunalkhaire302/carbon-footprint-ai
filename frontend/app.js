@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let comparisonChart = null;
   let lastResult = null;
 
-  const preferredTheme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const preferredTheme = localStorage.getItem('theme') || 'dark';
   document.documentElement.dataset.theme = preferredTheme;
   updateThemeButton();
 
@@ -173,6 +173,17 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCharts(data.category_breakdown, data.comparison);
     renderChartAlternatives(data.category_breakdown, data.comparison);
     renderSuggestions(data.recommendations);
+    renderInsight(data.category_breakdown, data.recommendations);
+  }
+
+  function renderInsight(breakdown, recommendations) {
+    const entries = Object.entries(breakdown).sort((a, b) => b[1] - a[1]);
+    const total = entries.reduce((sum, [, value]) => sum + value, 0);
+    const [largestName, largestValue] = entries[0];
+    const share = total ? Math.round((largestValue / total) * 100) : 0;
+    const action = recommendations[0]?.action || 'Review the action plan below';
+    document.getElementById('insightText').textContent = `${largestName} represents ${share}% of mapped emissions. ${action}.`;
+    document.getElementById('insightCount').textContent = recommendations.length;
   }
 
   function renderSuggestions(items) {
@@ -252,8 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
           tooltip: {callbacks: {label: context => ` ${context.parsed.y.toFixed(2)} tCO₂e / year`}},
         },
         scales: {
-          y: {beginAtZero: true, border: {display: false}, grid: {color: line}, ticks: {color: muted, font: {family: 'IBM Plex Mono', size: 10}}},
-          x: {border: {display: false}, grid: {display: false}, ticks: {color: text, font: {family: 'IBM Plex Mono', size: 10}}},
+          y: {beginAtZero: true, border: {display: false}, grid: {color: line}, ticks: {color: muted, font: {family: 'JetBrains Mono', size: 10}}},
+          x: {border: {display: false}, grid: {display: false}, ticks: {color: text, font: {family: 'JetBrains Mono', size: 10}}},
         },
       },
     });

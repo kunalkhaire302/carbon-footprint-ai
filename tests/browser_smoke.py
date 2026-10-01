@@ -28,8 +28,7 @@ def run() -> None:
                 page = browser.new_page(viewport=viewport)
                 errors: list[str] = []
                 page.on("pageerror", lambda error, sink=errors: sink.append(str(error)))
-                theme = "dark" if name == "desktop" else "light"
-                page.add_init_script(f"localStorage.setItem('theme', '{theme}');")
+                page.add_init_script("localStorage.setItem('theme', 'dark');")
                 page.add_init_script(
                     """
                     localStorage.setItem('carbonHistory', JSON.stringify([{
@@ -43,7 +42,7 @@ def run() -> None:
                     """
                 )
                 page.goto("http://127.0.0.1:5001", wait_until="networkidle")
-                assert page.locator("h1").get_by_text("Measure the life").is_visible()
+                assert "Measure the" in page.locator("h1").inner_text()
                 assert page.get_by_role("button", name="Calculate my footprint").is_visible()
                 assert page.locator("#historyBody tr").count() == 1
                 page.get_by_role("button", name="Calculate my footprint").click()
@@ -52,6 +51,7 @@ def run() -> None:
                 assert page.locator("#totalScore").inner_text() != "0.00"
                 assert page.locator("#categorySummary").text_content()
                 assert page.locator("#comparisonSummary").text_content()
+                assert page.locator("#insightText").text_content()
                 assert page.locator("#categoryLegend .ledger-item").count() == 6
                 assert page.locator("#breakdownTotal").inner_text() != "—"
                 assert "browser only" in page.locator(".privacy-note").inner_text()
