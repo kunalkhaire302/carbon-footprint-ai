@@ -263,8 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
           tooltip: {callbacks: {label: context => ` ${context.parsed.y.toFixed(2)} tCO₂e / year`}},
         },
         scales: {
-          y: {beginAtZero: true, border: {display: false}, grid: {color: line}, ticks: {color: muted, font: {family: 'JetBrains Mono', size: 10}}},
-          x: {border: {display: false}, grid: {display: false}, ticks: {color: text, font: {family: 'JetBrains Mono', size: 10}}},
+          y: {beginAtZero: true, border: {display: false}, grid: {color: line}, ticks: {color: muted, font: {family: 'JetBrains Mono', size: 12}}},
+          x: {border: {display: false}, grid: {display: false}, ticks: {color: text, font: {family: 'JetBrains Mono', size: 12}}},
         },
       },
     });

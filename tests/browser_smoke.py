@@ -43,6 +43,8 @@ def run() -> None:
                 )
                 page.goto("http://127.0.0.1:5001", wait_until="networkidle")
                 assert "Measure the" in page.locator("h1").inner_text()
+                assert page.evaluate("parseFloat(getComputedStyle(document.body).fontSize)") >= 16
+                assert page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth")
                 assert page.locator("#demo video").is_visible()
                 assert page.locator("#demo video source").get_attribute("src") == "assets/carbon-footprint-demo.mp4"
                 assert page.get_by_role("button", name="Calculate my footprint").is_visible()
