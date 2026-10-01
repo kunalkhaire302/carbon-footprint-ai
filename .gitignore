@@ -23,4 +23,5 @@ brag-output/
 __agent__/
 .omnirush/
 *.mp4
+!frontend/assets/carbon-footprint-demo.mp4
 *.docx
